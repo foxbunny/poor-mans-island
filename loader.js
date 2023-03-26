@@ -1,6 +1,6 @@
 {
   let
-    $d = document, {innerWidth: vw, innerHeight: vh} = window,
+    $d = document,
     load = $ => $d.head.append(Object.assign($d.createElement('script'), {async: 1, src: `components/${$.tagName.toLowerCase()}.js`})),
     io = new IntersectionObserver(es => {
       for (let e of es)
