@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Poor Man's Component Islands</title>
+    <script defer src="loader.js"></script>
+    <link rel="stylesheet" media="screen" href="index.screen.css">
+  </head>
+  <body>
+    <header>
+      <h1>Poor Man's Component Islands</h1>
+      <p>
+        This page is an implementation of the islands architecture pioneered by
+        Katie Sylor Miller at Etsy in 2019.
+      </p>
+    </header>
+
+    <main>
+      <h2>The island architecture</h2>
+
+      <p>
+        The island architecture uses server-side rendering to compose static
+        content and placeholders for the interactive content. The code for the
+        interactive content is not immediately linked to the page. Instead, a
+        loader is used to fetch the additional code when the content is in view.
+      </p>
+
+      <p>
+        The term "islands" refers to the fact that interactive components may
+        be surrounded by static server-rendered content, creating islands of
+        placeholders that are hydrated in a just-in-time fashion.
+      </p>
+
+      <p>
+        Compared to a monolithic web application, or a bundled micro-frontend,
+        the island architecture will significantly delay loading components on
+        a longer page where not all of them are needed at once. In a more
+        "application" like setup where everything is contained within the
+        viewport right off the bat, this architecture will be less efficient as
+        it will require multiple HTTP connections to fetch the code.
+      </p>
+
+      <h2>Poor man's islands implementation</h2>
+
+      <p>
+        The poor man's islands implementation uses a 19-line, 690-byte loader
+        script (unminified) to hydrate the island components. The components are
+        represented in the HTML via custom elements.
+      </p>
+
+      <p>
+        When the page loads, the loader goes through all DOM nodes on the page,
+        finds custom elements, and then loads a script that matches the name
+        if the component is in the viewport area, or sets up an intersection
+        observer to load the component when it is in the viewport.
+      </p>
+
+      <p>
+        The loader is (currently) limited to detecting components that are in
+        the viewport, and it does not cover situations where it is otherwise
+        impossible to interact with it (hidden, contained within hidden
+        elements, completely obscured by another element,
+        <code>pointer-events</code> set to <code>none</code>, etc.).
+      </p>
+
+      <h2>Why custom elements</h2>
+
+      <p>
+        Custom elements have been chosen because of the simplicity of
+        identifying the root node of the application, and because it does not
+        require the loader the control the initialization. The second reason
+        custom elements have been chosen is that, until touched by CSS, custom
+        elements have no appearance and do not affect the page in any way.
+      </p>
+
+      <p>
+        The drawback of relying on custom element name alone for figuring out
+        where the islands are is that it requires iterating over literally every
+        element on the page to find them. In the future, we may use an attribute
+        for this purpose, to narrow down the elements that we need to look at.
+      </p>
+
+      <p>
+        Even though we use a custom element in this implementation, that does
+        not necessarily mean that we cannot use UI libraries and frameworks.
+        Most frameworks will allow you to attach their components to a
+        specific node on the page, and there's no reason why that node wouldn't
+        be the island's custom element.
+      </p>
+    </main>
+    <aside id="component-demo">
+      <h2>Component island demo</h2>
+
+      <p>
+        This page contains a single component island using a
+        <code>&lt;test-island></code> custom element. After being loaded, it
+        pulls in its own stylesheets.
+      </p>
+
+      <test-island>
+        Loading...
+      </test-island>
+    </aside>
+  </body>
+</html>

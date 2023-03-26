@@ -1,0 +1,48 @@
+*, *::after, *::before
+{
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6, p
+{
+  font: inherit;
+  margin: 0;
+}
+
+button, label
+{
+  cursor: pointer;
+}
+
+input, button, select, textarea
+{
+  font: inherit;
+}
+
+html
+{
+  font-family: sans-serif;
+}
+
+header,
+main,
+#component-demo
+{
+  max-width: 80ch;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 200%;
+  margin: 2em 0 1em;
+}
+
+h2 {
+  font-weight: bold;
+  margin: 2em 0 1em;
+  text-transform: uppercase;
+}
+
+p {
+  margin: 1em 0;
+}
